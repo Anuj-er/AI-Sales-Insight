@@ -1,0 +1,40 @@
+name: Deploy Backend to HF Spaces
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push backend to HF Spaces
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          # Clone the HF Space
+          git clone https://Anuj-er:$HF_TOKEN@huggingface.co/spaces/Anuj-er/Sales-Insight hf_space
+
+          # Sync backend/ contents into the Space (delete removed files too)
+          rsync -av --delete --exclude='.git' backend/ hf_space/
+
+          # Commit and push if there are changes
+          cd hf_space
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+          else
+            git commit -m "sync: deploy from GitHub $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+          fi
