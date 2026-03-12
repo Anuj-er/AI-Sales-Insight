@@ -34,7 +34,8 @@ Accepts a data file (CSV or Excel) and an email address. The endpoint parses the
 - `400 Bad Request`: Missing file/email, or invalid file format.
 - `401 Unauthorized`: Missing or invalid `X-API-Key`.
 - `422 Unprocessable Entity`: Data parsing failure or invalid email format.
-- `500 Internal Server Error`: LLM generation failure or SMTP delivery failure.
+- `429 Too Many Requests`: Rate limit exceeded (5 requests per hour per IP).
+- `500 Internal Server Error`: LLM generation failure or email delivery failure.
 
 ---
 

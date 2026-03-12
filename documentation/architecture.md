@@ -23,8 +23,9 @@ The Sales Insight Automator is designed using a decoupled, containerized archite
 - **Role:** Ingests serialized data summaries and prompts to formulate human-readable, executive-level narratives. Selected for its exceptionally low latency (blazing fast inference speeds).
 
 ### 4. Email Dispatch Service
-- **Provider:** Standard Python `smtplib` via SMTP (e.g., Gmail App Passwords).
-- **Role:** Takes the Markdown payload from Groq, converts it into a styled HTML "README" format, and asynchronously dispatches it to the recipient's inbox.
+- **Provider:** [Resend](https://resend.com) HTTP API.
+- **Role:** Takes the Markdown payload from Groq, converts it into a styled HTML email, and dispatches it to the recipient's inbox via a single authenticated `POST https://api.resend.com/emails` call.
+- **Why not SMTP?** Cloud hosts (Hugging Face Spaces, Render, etc.) block outbound SMTP ports (465/587). The Resend HTTP API bypasses this entirely and works reliably from any hosting environment.
 
 ## Data Flow Diagram
 *(Refer to the main `README.md` for visual system architecture flows).*

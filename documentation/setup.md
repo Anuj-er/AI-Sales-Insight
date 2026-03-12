@@ -8,7 +8,7 @@ Ensure the following tools are installed on your system before proceeding:
 
 You will also need:
 1. A **Groq API Key** (available for free at [console.groq.com](https://console.groq.com)).
-2. An **App Password** for an SMTP provider (e.g., Gmail App Passwords, SendGrid, Mailgun) to dispatch emails.
+2. A **Resend API Key** (free tier at [resend.com](https://resend.com)) with a verified custom domain for email dispatch.
 
 ---
 
@@ -17,7 +17,7 @@ You will also need:
 ### 1. Clone the Repository
 Clone the repository and navigate into the root directory:
 ```bash
-git clone <repository_url>
+git clone https://github.com/Anuj-er/AI-Sales-Insight.git
 cd Sales-Automator
 ```
 

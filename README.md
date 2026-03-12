@@ -7,7 +7,7 @@
 
 🌐 **Live App**: [ai-sales-in.vercel.app](https://ai-sales-in.vercel.app) | 📡 **API Docs**: [/docs](https://anuj-er-sales-insight.hf.space/docs)
 
-**A containerized, AI-powered ecosystem designed to transform raw quartersly sales data into actionable executive narratives via zero-latency LLM inference.**
+**A containerized, AI-powered ecosystem designed to transform raw quarterly sales data into actionable executive narratives via zero-latency LLM inference.**
 
 ---
 
@@ -37,7 +37,7 @@ graph TD
     
     subgraph "Dispatch System"
         Backend -->|Markdown to HTML Transformation| Styles[🎨 CSS Inliner]
-        Styles -->|SMTP Protocol| EmailServer[📧 Mail Service]
+        Styles -->|Resend HTTP API| EmailServer[📧 Mail Service]
     end
     
     EmailServer -->|Delivers Insight Brief| User
@@ -68,9 +68,10 @@ graph LR
 
 - **🚀 High-Performance Parsing**: Asynchronous handling of multi-megabyte sales datasets using FastAPI.
 - **🧠 Intelligent Narratives**: Context-aware summaries that identify trends, anomalies, and performance metrics using Llama 3.1.
-- **📧 Automated Professional Reporting**: Clean, branded HTML email dispatch using SMTP integration.
+- **📧 Automated Professional Reporting**: Clean, branded HTML email dispatch via the **Resend HTTP API** (no SMTP — works on all cloud hosts).
 - **🔒 Enterprise Security**: 
   - **X-API-Key Protection**: Strict authentication for all inference endpoints.
+  - **IP Rate Limiting**: 5 requests/hour per IP to prevent email abuse and LLM cost runaway.
   - **CORS Hardening**: Granular origin control for production environments.
   - **Environment Isolation**: Zero hardcoded secrets; strictly `dotenv` driven.
 - **🐳 Container First**: Optimized Multi-stage Docker builds for minimal footprint.
