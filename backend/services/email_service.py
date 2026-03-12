@@ -13,7 +13,7 @@ def send_summary_email(to_email: str, summary: str):
 
     if not sender_email or not sender_password:
         print("Warning: SMTP credentials not provided. Skipping email delivery.")
-        return False
+        return False, "SMTP_EMAIL or SMTP_PASSWORD environment variables are not set."
 
     msg = MIMEMultipart()
     msg['From'] = sender_email
@@ -99,7 +99,7 @@ def send_summary_email(to_email: str, summary: str):
         server.login(sender_email, sender_password)
         server.send_message(msg)
         server.quit()
-        return True
+        return True, None
     except Exception as e:
         print(f"Failed to send email: {e}")
-        return False
+        return False, str(e)

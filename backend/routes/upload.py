@@ -33,10 +33,10 @@ async def upload_sales_data(
         summary = generate_sales_summary(df)
         
         # Send Email
-        email_sent = send_summary_email(to_email=email, summary=summary)
+        email_sent, email_error = send_summary_email(to_email=email, summary=summary)
         
         if not email_sent:
-            return {"message": "Summary generated successfully, but failed to send email. Check SMTP settings.", "summary": summary}
+            return {"message": f"Summary generated successfully, but failed to send email. Reason: {email_error}", "summary": summary}
             
         return {"message": f"Summary generated and sent to {email} successfully."}
         
