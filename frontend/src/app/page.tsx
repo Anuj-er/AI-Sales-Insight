@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { UploadCloud, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { UploadCloud, CheckCircle, AlertCircle, Loader2, FileText, Mail } from "lucide-react";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -20,8 +20,8 @@ export default function Home() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'text/csv': ['.csv'],
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+      "text/csv": [".csv"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
     },
     maxFiles: 1,
   });
@@ -34,11 +34,24 @@ export default function Home() {
       return;
     }
 
+    // Read file into memory BEFORE state changes trigger re-renders.
+    // Re-renders can invalidate the browser's file input reference, causing
+    // ERR_UPLOAD_FILE_CHANGED when the DOM input element is recreated.
+    let fileBuffer: ArrayBuffer;
+    try {
+      fileBuffer = await file.arrayBuffer();
+    } catch {
+      setStatus("error");
+      setMessage("Failed to read the file. Please try selecting it again.");
+      return;
+    }
+
     setStatus("loading");
     setMessage("");
 
+    const fileBlob = new Blob([fileBuffer], { type: file.type });
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", fileBlob, file.name);
     formData.append("email", email);
 
     try {
@@ -46,7 +59,7 @@ export default function Home() {
       const response = await axios.post(`${apiUrl}/api/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "X-API-Key": process.env.NEXT_PUBLIC_API_KEY || "default-dev-key"
+          "X-API-Key": process.env.NEXT_PUBLIC_API_KEY || "default-dev-key",
         },
       });
       setStatus("success");
@@ -55,81 +68,133 @@ export default function Home() {
       setStatus("error");
       setMessage(
         err.response?.data?.detail ||
-        "An unexpected error occurred. Ensure the backend is running and reachable."
+          "An unexpected error occurred. Ensure the backend is running and reachable."
       );
     }
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center justify-center p-6 font-sans">
-      <div className="w-full max-w-xl bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
-        <div className="p-8 border-b border-gray-100 bg-white flex flex-col items-center">
-          <img src="/logo.png" alt="Sales Insight Automator Logo" className="w-16 h-16 mb-6 drop-shadow-sm" />
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900 text-center">
-            Sales Insight Automator
-          </h1>
-          <p className="text-gray-500 mt-3 text-sm leading-relaxed text-center max-w-sm">
-            Upload your quarterly sales data (CSV/Excel) to securely generate a professional executive narrative delivered straight to your inbox.
-          </p>
+    <main className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
+      {/* Page header */}
+      <div className="w-full max-w-md mb-8 flex flex-col items-center">
+        <img src="/logo.png" alt="Sales Insight Automator" className="w-10 h-10 mb-4" />
+        <h1 className="text-xl font-semibold text-slate-800 tracking-tight text-center">
+          Sales Insight Automator
+        </h1>
+        <p className="text-sm text-slate-400 mt-1.5 text-center leading-relaxed max-w-xs">
+          Upload your sales data and receive an AI‑generated executive summary straight to your inbox.
+        </p>
+      </div>
+
+      {/* Card */}
+      <div className="w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-sm p-8 space-y-5">
+        {/* File upload zone */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+            Data File
+          </label>
+          <div
+            {...getRootProps()}
+            className={`rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
+              isDragActive
+                ? "border-2 border-sky-300 bg-sky-50"
+                : file
+                ? "border border-slate-200 bg-slate-50"
+                : "border-2 border-dashed border-slate-200 bg-slate-50/40 hover:bg-slate-50 hover:border-slate-300"
+            }`}
+          >
+            <input {...getInputProps()} />
+            {file ? (
+              <div className="flex items-center gap-3 w-full">
+                <div className="w-9 h-9 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0">
+                  <FileText className="w-4 h-4 text-sky-500" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-slate-700 truncate">{file.name}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {(file.size / 1024).toFixed(1)} KB &middot; click to change
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${
+                    isDragActive ? "bg-sky-100" : "bg-slate-100"
+                  }`}
+                >
+                  <UploadCloud
+                    className={`w-5 h-5 ${isDragActive ? "text-sky-500" : "text-slate-400"}`}
+                  />
+                </div>
+                <p className="text-sm font-medium text-slate-600">
+                  {isDragActive ? "Release to upload" : "Drop your file here"}
+                </p>
+                <p className="text-xs text-slate-400 mt-1">CSV or Excel &middot; click to browse</p>
+              </>
+            )}
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
-          <div className="space-y-4">
-            <label className="block text-sm font-medium text-gray-700">Data File</label>
-            <div
-              {...getRootProps()}
-              className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center transition-all cursor-pointer bg-gray-50/50 ${isDragActive ? "border-indigo-500 bg-indigo-50/50" : "border-gray-300 hover:border-indigo-400 hover:bg-gray-50"
-                }`}
-            >
-              <input {...getInputProps()} />
-              <UploadCloud className={`w-8 h-8 mb-3 ${isDragActive ? "text-indigo-500" : "text-gray-400"}`} />
-              <p className="text-sm font-medium text-gray-700 text-center">
-                {file ? file.name : (isDragActive ? "Drop file here..." : "Drag & drop your CSV or Excel file here")}
-              </p>
-              {!file && <p className="text-xs text-gray-500 mt-1">or click to browse from your computer</p>}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Recipient Email</label>
+        {/* Email input */}
+        <div className="space-y-1.5">
+          <label
+            htmlFor="email"
+            className="text-xs font-medium text-slate-400 uppercase tracking-wider"
+          >
+            Recipient Email
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300 pointer-events-none" />
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="executive@company.com"
-              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400 shadow-sm"
+              className="w-full pl-9 pr-4 py-2.5 text-sm border border-slate-200 rounded-xl bg-white text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-300 transition-all"
               required
             />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={status === "loading" || !file || !email}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg flex items-center justify-center transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-sm"
-          >
-            {status === "loading" ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : "Generate & Send Insight Brief"}
-          </button>
-        </form>
+        {/* Submit */}
+        <button
+          onClick={handleSubmit}
+          disabled={status === "loading" || !file || !email}
+          className="w-full bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-white text-sm font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {status === "loading" ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Processing…
+            </>
+          ) : (
+            "Generate & Send Brief"
+          )}
+        </button>
 
+        {/* Status feedback */}
         {status !== "idle" && status !== "loading" && (
-          <div className={`p-4 mx-8 mb-8 rounded-lg border flex items-start space-x-3 text-sm animate-in fade-in slide-in-from-bottom-2 ${status === "success"
-            ? "bg-green-50 border-green-200 text-green-800"
-            : "bg-red-50 border-red-200 text-red-800"
-            }`}>
-            {status === "success" ? <CheckCircle className="w-5 h-5 shrink-0 mt-0.5 text-green-600" /> : <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-red-600" />}
+          <div
+            className={`flex items-start gap-2.5 p-3.5 rounded-xl text-sm border ${
+              status === "success"
+                ? "bg-emerald-50 border-emerald-100 text-emerald-700"
+                : "bg-red-50 border-red-100 text-red-600"
+            }`}
+          >
+            {status === "success" ? (
+              <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            ) : (
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            )}
             <span className="leading-relaxed">{message}</span>
           </div>
         )}
       </div>
 
-      <p className="mt-8 text-gray-400 text-xs text-center uppercase tracking-wider font-semibold">
-        Powered by Next.js, FastAPI & Groq
+      <p className="mt-6 text-xs text-slate-300 tracking-widest uppercase text-center">
+        Powered by Next.js &middot; FastAPI &middot; Groq
       </p>
     </main>
   );
