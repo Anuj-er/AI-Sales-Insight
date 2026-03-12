@@ -22,6 +22,10 @@ app.add_middleware(
 
 app.include_router(upload.router, prefix="/api")
 
+@app.get("/")
+def root():
+    return {"status": "Sales Insight Automator API is running"}
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
