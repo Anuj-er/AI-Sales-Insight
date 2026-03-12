@@ -84,7 +84,7 @@ def send_summary_email(to_email: str, summary: str):
             "https://api.resend.com/emails",
             headers={"Authorization": f"Bearer {api_key}"},
             json={
-                "from": "Sales Insight Automator <onboarding@resend.dev>",
+                "from": f"Sales Insight Automator <{os.getenv('SENDER_EMAIL', 'onboarding@resend.dev')}>",
                 "to": [to_email],
                 "subject": "Sales Insight Automator - Generated Summary",
                 "html": styled_html,
