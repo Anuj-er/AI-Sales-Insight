@@ -31,16 +31,22 @@ Open `.env` in a text editor and fill in your secrets:
 # --- LLM API Configuration ---
 GROQ_API_KEY=your_groq_api_key_here
 
-# --- Email (SMTP) Configuration ---
-SMTP_EMAIL=your_email@gmail.com
-SMTP_PASSWORD=your_app_password
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-
 # --- Security Configuration ---
-# Generate a secure 64-character hex string or use any secure secret.
-API_KEY=your_secure_api_key
+API_KEY=your_secure_api_key_here
+ALLOWED_ORIGINS=http://localhost:3000,https://your-vercel-app.vercel.app
+
+# --- Email — Resend API ---
+# Raw SMTP (ports 465/587) is blocked on most cloud hosts (Hugging Face, Render, etc.).
+# Sign up at https://resend.com, verify a custom domain, then generate an API key.
+RESEND_API_KEY=your_resend_api_key_here
+SENDER_EMAIL=noreply@yourdomain.com
+
+# --- Frontend Configuration (Vercel) ---
+NEXT_PUBLIC_API_URL=https://your-hf-space.hf.space
+NEXT_PUBLIC_API_KEY=your_secure_api_key_here
 ```
+
+> 💡 **Why Resend instead of SMTP?** Cloud platforms such as Hugging Face Spaces block outbound SMTP ports (465/587), causing email delivery to silently fail. The backend uses the **Resend HTTP API** directly — no `smtplib` involved. Simply supply `RESEND_API_KEY` and `SENDER_EMAIL`. Sign up free at [resend.com](https://resend.com), verify your domain via DNS, and generate an API key.
 
 ### 3. Spin up the Stack
 Build and launch the containerized infrastructure via Docker Compose:

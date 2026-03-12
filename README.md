@@ -84,12 +84,13 @@ graph LR
 2. **Runtime**: The Space uses the provided `backend/Dockerfile` automatically.
 3. **Environment Variables** (set in Space Settings → Repository Secrets):
    - `GROQ_API_KEY`: Your Groq token.
-   - `SMTP_SERVER`: e.g., `smtp.gmail.com`.
-   - `SMTP_PORT`: e.g., `465` or `587`.
-   - `SMTP_USERNAME`: Your email.
-   - `SMTP_PASSWORD`: Your App Password.
-   - `API_KEY`: Set your custom `X-API-Key`.
-   - `ALLOWED_ORIGINS`: Set to your Vercel URL (e.g., `https://ai-sales-in.vercel.app`).
+   - `API_KEY`: Your custom `X-API-Key` secret.
+   - `ALLOWED_ORIGINS`: Your Vercel URL, e.g. `https://ai-sales-in.vercel.app`.
+   - `RESEND_API_KEY`: API key from [resend.com](https://resend.com) — used for email delivery.
+   - `SENDER_EMAIL`: A verified sender address on your Resend domain (e.g. `noreply@yourdomain.com`).
+
+> 💡 **Why Resend instead of SMTP?** Most cloud hosts (including Hugging Face Spaces) block outbound SMTP ports (465/587), causing silent email failures. The backend already uses the **Resend HTTP API** (`POST https://api.resend.com/emails`) so no code changes are needed — just supply the two secrets above. Sign up free at [resend.com](https://resend.com), verify a custom domain via DNS, and generate an API key.
+
 4. **Live Backend**: [anuj-er-sales-insight.hf.space](https://anuj-er-sales-insight.hf.space)
 
 ### Phase 2: Frontend (Vercel)
