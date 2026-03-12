@@ -1,7 +1,7 @@
 # 📈 Sales Insight Automator
 
-![CI Status](https://github.com/Anuj-er/Rabbit-Submission/actions/workflows/main.yml/badge.svg)
-![License](https://img.shields.io/github/license/Anuj-er/Rabbit-Submission)
+![CI Status](https://github.com/Anuj-er/AI-Sales-Insight/actions/workflows/main.yml/badge.svg)
+![License](https://img.shields.io/github/license/Anuj-er/AI-Sales-Insight)
 ![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
 ![Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render)
 
@@ -104,7 +104,7 @@ For rapid local testing and development:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Anuj-er/Rabbit-Submission.git
+git clone https://github.com/Anuj-er/AI-Sales-Insight.git
 cd Rabbit-Submission
 
 # Configure local env

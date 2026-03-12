@@ -5,7 +5,7 @@ First off, thank you for considering contributing to the **Sales Insight Automat
 ## How Can I Contribute?
 
 ### Reporting Bugs
-- Check the [GitHub Issues](https://github.com/Anuj-er/Rabbit-Submission/issues) to see if the bug has already been reported.
+- Check the [GitHub Issues](https://github.com/Anuj-er/AI-Sales-Insight/issues) to see if the bug has already been reported.
 - If it hasn't, open a new issue. Be as detailed as possible, including steps to reproduce the bug and your environment details.
 
 ### Suggesting Enhancements
