@@ -1,34 +1,22 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.multipart import MIMEMultipart
 import os
+import httpx
 import markdown
 
 def send_summary_email(to_email: str, summary: str):
-    sender_email = os.getenv("SMTP_EMAIL")
-    sender_password = os.getenv("SMTP_PASSWORD")
-    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    api_key = os.getenv("RESEND_API_KEY")
 
-    if not sender_email or not sender_password:
-        print("Warning: SMTP credentials not provided. Skipping email delivery.")
-        return False, "SMTP_EMAIL or SMTP_PASSWORD environment variables are not set."
-
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = to_email
-    msg['Subject'] = "Sales Insight Automator - Generated Summary"
+    if not api_key:
+        print("Warning: RESEND_API_KEY not set. Skipping email delivery.")
+        return False, "RESEND_API_KEY environment variable is not set."
 
     html_body = markdown.markdown(summary)
-    
-    # Wrap in a gorgeous "README" style CSS envelope
+
     styled_html = f"""
     <html>
       <head>
         <style>
           body {{
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             line-height: 1.6;
             color: #24292f;
             background-color: #f6f8fa;
@@ -90,16 +78,26 @@ def send_summary_email(to_email: str, summary: str):
       </body>
     </html>
     """
-    
-    msg.attach(MIMEText(styled_html, 'html'))
 
     try:
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.send_message(msg)
-        server.quit()
-        return True, None
+        response = httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={
+                "from": "Sales Insight Automator <onboarding@resend.dev>",
+                "to": [to_email],
+                "subject": "Sales Insight Automator - Generated Summary",
+                "html": styled_html,
+            },
+            timeout=30,
+        )
+        if response.status_code == 200 or response.status_code == 201:
+            return True, None
+        else:
+            error = response.json().get("message", response.text)
+            print(f"Resend API error: {error}")
+            return False, error
     except Exception as e:
         print(f"Failed to send email: {e}")
         return False, str(e)
+
