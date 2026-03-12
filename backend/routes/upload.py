@@ -1,14 +1,19 @@
-from fastapi import APIRouter, File, Form, UploadFile, HTTPException, Depends
+from fastapi import APIRouter, File, Form, Request, UploadFile, HTTPException, Depends
 from services.llm_service import generate_sales_summary
 from services.email_service import send_summary_email
 from middleware.auth import get_api_key
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 import pandas as pd
 import io
 
+limiter = Limiter(key_func=get_remote_address)
 router = APIRouter(tags=["Sales Analysis"])
 
 @router.post("/upload")
+@limiter.limit("5/hour")
 async def upload_sales_data(
+    request: Request,
     file: UploadFile = File(...),
     email: str = Form(...),
     api_key: str = Depends(get_api_key)
