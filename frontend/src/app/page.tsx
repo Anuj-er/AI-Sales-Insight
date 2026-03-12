@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useDropzone } from "react-dropzone";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { UploadCloud, CheckCircle, AlertCircle, Loader2, FileText, Mail } from "lucide-react";
 
 export default function Home() {
@@ -64,10 +65,11 @@ export default function Home() {
       });
       setStatus("success");
       setMessage(response.data.message || "Summary successfully generated and sent! Check your inbox.");
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ detail: string }>;
       setStatus("error");
       setMessage(
-        err.response?.data?.detail ||
+        error.response?.data?.detail ||
           "An unexpected error occurred. Ensure the backend is running and reachable."
       );
     }
@@ -77,7 +79,7 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
       {/* Page header */}
       <div className="w-full max-w-md mb-8 flex flex-col items-center">
-        <img src="/logo.png" alt="Sales Insight Automator" className="w-10 h-10 mb-4" />
+        <Image src="/logo.png" alt="Sales Insight Automator" width={40} height={40} className="mb-4" />
         <h1 className="text-xl font-semibold text-slate-800 tracking-tight text-center">
           Sales Insight Automator
         </h1>

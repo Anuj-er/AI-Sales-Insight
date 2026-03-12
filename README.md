@@ -3,9 +3,9 @@
 ![CI Status](https://github.com/Anuj-er/AI-Sales-Insight/actions/workflows/main.yml/badge.svg)
 ![License](https://img.shields.io/github/license/Anuj-er/AI-Sales-Insight)
 ![Vercel](https://img.shields.io/badge/Frontend-Live-brightgreen?logo=vercel)
-![Render](https://img.shields.io/badge/Backend-Live-brightgreen?logo=render)
+![Hugging Face](https://img.shields.io/badge/Backend-Live-brightgreen?logo=huggingface)
 
-🌐 **Live App**: [ai-sales-insight-seven.vercel.app](https://ai-sales-insight-seven.vercel.app) | 📡 **API Docs**: [/docs](https://ai-sales-insight-kitf.onrender.com/docs)
+🌐 **Live App**: [ai-sales-in.vercel.app](https://ai-sales-in.vercel.app) | 📡 **API Docs**: [/docs](https://anuj-er-sales-insight.hf.space/docs)
 
 **A containerized, AI-powered ecosystem designed to transform raw quartersly sales data into actionable executive narratives via zero-latency LLM inference.**
 
@@ -79,24 +79,26 @@ graph LR
 
 ## 🌐 Production Deployment Guide
 
-### Phase 1: Backend (Render)
-1. **Repository**: Link your GitHub repo to a new **Web Service** on Render.
-2. **Runtime**: Select `Python` or use the provided `backend/Dockerfile`.
-3. **Environment Variables**:
+### Phase 1: Backend (Hugging Face Space)
+1. **Space Setup**: Create a new **Docker** Space on [Hugging Face](https://huggingface.co/spaces) and link your GitHub repo or upload the `backend/` directory.
+2. **Runtime**: The Space uses the provided `backend/Dockerfile` automatically.
+3. **Environment Variables** (set in Space Settings → Repository Secrets):
    - `GROQ_API_KEY`: Your Groq token.
    - `SMTP_SERVER`: e.g., `smtp.gmail.com`.
    - `SMTP_PORT`: e.g., `465` or `587`.
    - `SMTP_USERNAME`: Your email.
    - `SMTP_PASSWORD`: Your App Password.
    - `API_KEY`: Set your custom `X-API-Key`.
-   - `ALLOWED_ORIGINS`: Set to your Vercel URL (e.g., `https://your-app.vercel.app`).
+   - `ALLOWED_ORIGINS`: Set to your Vercel URL (e.g., `https://ai-sales-in.vercel.app`).
+4. **Live Backend**: [anuj-er-sales-insight.hf.space](https://anuj-er-sales-insight.hf.space)
 
 ### Phase 2: Frontend (Vercel)
 1. **Import Project**: Select the `frontend` directory in the Vercel dashboard.
 2. **Environment Variables**:
-   - `NEXT_PUBLIC_API_URL`: Your Render service URL (e.g., `https://your-backend.onrender.com`).
+   - `NEXT_PUBLIC_API_URL`: Your Hugging Face Space URL (`https://anuj-er-sales-insight.hf.space`).
    - `NEXT_PUBLIC_API_KEY`: Must match the `API_KEY` set on the backend.
 3. **Deploy**: Vercel will automatically detect the Next.js framework and handle the build.
+4. **Live Frontend**: [ai-sales-in.vercel.app](https://ai-sales-in.vercel.app)
 
 ---
 

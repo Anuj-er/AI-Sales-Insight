@@ -1,7 +1,13 @@
-Date,Product_Category,Region,Units_Sold,Unit_Price,Revenue,Status
-2026-01-05,Electronics,North,150,1200,180000,Shipped
-2026-01-12,Home Appliances,South,45,450,20250,Shipped
-2026-01-20,Electronics,East,80,1100,88000,Delivered
-2026-02-15,Electronics,North,210,1250,262500,Delivered
-2026-02-28,Home Appliances,North,60,400,24000,Cancelled
-2026-03-10,Electronics,West,95,1150,109250,Shipped
+Date,Product_Category,Region,Units_Sold,Unit_Price,Revenue,Status,Sales_Rep
+2026-01-05,Electronics,North,150,1200,180000,Shipped,Riya Mehta
+2026-01-12,Home Appliances,South,45,450,20250,Shipped,Arjun Sharma
+2026-01-20,Electronics,East,80,1100,88000,Delivered,Priya Nair
+2026-01-28,Furniture,West,30,2500,75000,Delivered,Karan Singh
+2026-02-05,Electronics,North,200,1300,260000,Shipped,Riya Mehta
+2026-02-15,Electronics,North,210,1250,262500,Delivered,Riya Mehta
+2026-02-20,Home Appliances,East,55,480,26400,Delivered,Priya Nair
+2026-02-28,Home Appliances,North,60,400,24000,Cancelled,Arjun Sharma
+2026-03-01,Furniture,South,25,2800,70000,Shipped,Karan Singh
+2026-03-05,Electronics,South,120,1150,138000,Shipped,Arjun Sharma
+2026-03-10,Electronics,West,95,1150,109250,Shipped,Karan Singh
+2026-03-12,Home Appliances,West,40,500,20000,Delivered,Priya Nair

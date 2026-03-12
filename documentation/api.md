@@ -41,6 +41,6 @@ Accepts a data file (CSV or Excel) and an email address. The endpoint parses the
 ## API Access
 
 - **Local Development:** `http://localhost:8000/docs`
-- **Production (Render):** `https://your-service-name.onrender.com/docs`
+- **Production (Hugging Face Space):** `https://anuj-er-sales-insight.hf.space/docs`
 
 For interactive testing and automatic schema definitions, access the Swagger UI at the `/docs` endpoint of your deployed backend.

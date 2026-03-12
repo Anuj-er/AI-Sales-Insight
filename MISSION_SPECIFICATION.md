@@ -23,7 +23,7 @@ Build and deploy a "Quick-Response Tool" prototype that allows team members to u
 ### 3. Infrastructure & DevOps Excellence
 - **Containerization**: Production-ready `Dockerfile` and `docker-compose.yml` for local environment parity.
 - **Automation (CI/CD)**: Optimized GitHub Action for build validation and code linting.
-- **Hosting**: Live deployment with separate tiers (e.g., Vercel for Frontend, Render for Backend).
+- **Hosting**: Live deployment with separate tiers (Vercel for Frontend, Hugging Face Space for Backend).
 
 ## 📊 Evaluation Criteria
 - **End-to-End Execution**: Seamless flow from upload to inbox delivery.

@@ -58,11 +58,11 @@ docker-compose up --build -d
 2. **Backend API Docs:** Navigate to `http://localhost:8000/docs`.
 
 ### Production
-1. **Frontend:** Accessible via your Vercel deployment URL.
-2. **Backend:** Accessible via your Render service URL (append `/docs` for Swagger).
+1. **Frontend:** Accessible at [ai-sales-in.vercel.app](https://ai-sales-in.vercel.app).
+2. **Backend:** Accessible at [anuj-er-sales-insight.hf.space](https://anuj-er-sales-insight.hf.space) (append `/docs` for Swagger UI).
 
 ## Deployment Guides
-For detailed steps on deploying to **Render** and **Vercel**, please refer to the main [README.md](../README.md#-production-deployment-guide).
+For detailed steps on deploying to **Hugging Face Spaces** and **Vercel**, please refer to the main [README.md](../README.md#-production-deployment-guide).
 
 ## Shutting Down
 To gracefully stop and remove the containers:
