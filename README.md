@@ -2,8 +2,10 @@
 
 ![CI Status](https://github.com/Anuj-er/AI-Sales-Insight/actions/workflows/main.yml/badge.svg)
 ![License](https://img.shields.io/github/license/Anuj-er/AI-Sales-Insight)
-![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
-![Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render)
+![Vercel](https://img.shields.io/badge/Frontend-Live-brightgreen?logo=vercel)
+![Render](https://img.shields.io/badge/Backend-Live-brightgreen?logo=render)
+
+🌐 **Live App**: [ai-sales-insight-seven.vercel.app](https://ai-sales-insight-seven.vercel.app) | 📡 **API Docs**: [/docs](https://ai-sales-insight-kitf.onrender.com/docs)
 
 **A containerized, AI-powered ecosystem designed to transform raw quartersly sales data into actionable executive narratives via zero-latency LLM inference.**
 
@@ -105,7 +107,7 @@ For rapid local testing and development:
 ```bash
 # Clone the repository
 git clone https://github.com/Anuj-er/AI-Sales-Insight.git
-cd Rabbit-Submission
+cd AI-Sales-Insight
 
 # Configure local env
 cp .env.example .env
